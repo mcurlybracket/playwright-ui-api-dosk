@@ -18,7 +18,11 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npx playwright install --with-deps
-    - run: npm run dev:test
+    - run: npx playwright install chromium firefox webkit
+    - run: |
+        npm run mock:serve &
+        sleep 10
+        npm test
     - uses: actions/upload-artifact@v4
       if: always()
       with:
