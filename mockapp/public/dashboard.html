@@ -22,9 +22,9 @@
       <option value="commercial">Commercial</option>
     </select>
     <input type="file" name="images" multiple accept="image/*" />
-    <div data-test="error-name" style="color:red;display:none;visibility:hidden">Name is required</div>
-    <div data-test="error-address" style="color:red;display:none;visibility:hidden">Address is required</div>
-    <div data-test="error-images" style="color:red;display:none;visibility:hidden">Images are required</div>
+    <div data-test="error-name" style="color:red;display:none">Name is required</div>
+    <div data-test="error-address" style="color:red;display:none">Address is required</div>
+    <div data-test="error-images" style="color:red;display:none">Images are required</div>
     <button type="submit">Create Tour</button>
   </form>
 </div>
@@ -43,21 +43,18 @@ document.querySelector('#create-tour-form').addEventListener('submit', async (e)
   document.querySelector('[data-test="error-address"]').style.display = 'none';
   document.querySelector('[data-test="error-images"]').style.display = 'none';
   
-  // Validation
+  // Validation - show errors immediately
   let hasErrors = false;
   if (!formData.get('title')) {
     document.querySelector('[data-test="error-name"]').style.display = 'block';
-    document.querySelector('[data-test="error-name"]').style.visibility = 'visible';
     hasErrors = true;
   }
   if (!formData.get('address')) {
     document.querySelector('[data-test="error-address"]').style.display = 'block';
-    document.querySelector('[data-test="error-address"]').style.visibility = 'visible';
     hasErrors = true;
   }
   if (!formData.get('images')) {
     document.querySelector('[data-test="error-images"]').style.display = 'block';
-    document.querySelector('[data-test="error-images"]').style.visibility = 'visible';
     hasErrors = true;
   }
   

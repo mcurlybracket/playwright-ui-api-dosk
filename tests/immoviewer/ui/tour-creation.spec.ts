@@ -38,11 +38,11 @@ test.describe('Tour Creation Workflow', () => {
     await page.locator('#create-tour-form button[type="submit"]').click();
     
     // Wait a bit for JavaScript to process
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(200);
     
-    // Verify validation errors
-    await expect(page.locator('[data-test="error-name"]')).toBeVisible();
-    await expect(page.locator('[data-test="error-address"]')).toBeVisible();
-    await expect(page.locator('[data-test="error-images"]')).toBeVisible();
+    // Verify validation errors are displayed
+    await expect(page.locator('[data-test="error-name"]')).toHaveText('Name is required');
+    await expect(page.locator('[data-test="error-address"]')).toHaveText('Address is required');
+    await expect(page.locator('[data-test="error-images"]')).toHaveText('Images are required');
   });
 });
