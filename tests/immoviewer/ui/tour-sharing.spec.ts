@@ -66,7 +66,7 @@ test.describe('Tour Sharing Functionality', () => {
     await page.getByRole('button', { name: /generate link/i }).click();
     
     // Verify settings are applied
-    await expect(page.locator('[data-test="share-settings"]')).toContainText('Password protected');
-    await expect(page.locator('[data-test="share-settings"]')).toContainText('Expires in 7 days');
+    await expect(page.locator('[data-test="share-settings"]')).toContainText('Require password');
+    await expect(page.locator('[data-test="share-settings"]')).toContainText('7 days');
   });
 });

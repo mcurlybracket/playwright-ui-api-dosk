@@ -37,6 +37,9 @@ test.describe('Tour Creation Workflow', () => {
     // Try to submit without required fields
     await page.locator('#create-tour-form button[type="submit"]').click();
     
+    // Wait a bit for JavaScript to process
+    await page.waitForTimeout(100);
+    
     // Verify validation errors
     await expect(page.locator('[data-test="error-name"]')).toBeVisible();
     await expect(page.locator('[data-test="error-address"]')).toBeVisible();
