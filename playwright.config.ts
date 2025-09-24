@@ -27,7 +27,7 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
   ],
-  webServer: {
+  webServer: process.env.CI ? undefined : {
     command: 'npm run mock:serve',
     port: Number(process.env.MOCK_PORT || 5173),
     timeout: 30_000,
