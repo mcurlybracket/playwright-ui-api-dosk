@@ -1,0 +1,28 @@
+{
+  "name": "playwright-ui-api-dosk",
+  "version": "1.0.0",
+  "description": "Playwright UI + API tests for DocuSketch/Immoviewer with mock server",
+  "scripts": {
+    "mock:serve": "ts-node --esm ./mockapp/server.ts",
+    "dev:test": "concurrently -k --raw \"npm:mock:serve\" \"playwright test\"",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:performance": "playwright test tests/performance/",
+    "test:api": "playwright test tests/docusketch/api/",
+    "test:immoviewer": "playwright test tests/immoviewer/"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.0.0",
+    "concurrently": "^8.2.2",
+    "express": "^4.19.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
