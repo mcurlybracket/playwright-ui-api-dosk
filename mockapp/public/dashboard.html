@@ -38,6 +38,11 @@ document.querySelector('#create-tour-form').addEventListener('submit', async (e)
   e.preventDefault();
   const formData = new FormData(e.target);
   
+  // Clear previous errors
+  document.querySelector('[data-test="error-name"]').style.display = 'none';
+  document.querySelector('[data-test="error-address"]').style.display = 'none';
+  document.querySelector('[data-test="error-images"]').style.display = 'none';
+  
   // Validation
   let hasErrors = false;
   if (!formData.get('title')) {

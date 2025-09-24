@@ -23,8 +23,8 @@ test.describe('Tour Creation Workflow', () => {
     await page.locator('#create-tour-form button[type="submit"]').click();
     
     // Verify tour appears in dashboard
-    await expect(page.locator('[data-test="tour-card"]')).toContainText('Luxury Downtown Loft');
-    await expect(page.locator('[data-test="tour-status"]')).toContainText('Processing');
+    await expect(page.locator('[data-test="tour-card"]').last()).toContainText('Luxury Downtown Loft');
+    await expect(page.locator('[data-test="tour-status"]').last()).toContainText('Processing');
   });
 
   test('Tour creation with validation errors', async ({ page }) => {
