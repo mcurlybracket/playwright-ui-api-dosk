@@ -47,6 +47,13 @@ test.describe('Tour Sharing Functionality', () => {
     
     await page.getByRole('button', { name: /share/i }).click();
     
+    // Wait for modal to be visible and select public link option
+    await expect(page.locator('[data-test="share-modal"]')).toBeVisible();
+    await page.getByRole('radio', { name: /public link/i }).check();
+    
+    // Wait for public link section to be visible
+    await expect(page.locator('[data-test="public-link-section"]')).toBeVisible();
+    
     // Configure sharing settings
     await page.locator('input[name="allow-downloads"]').check();
     await page.locator('input[name="require-password"]').check();

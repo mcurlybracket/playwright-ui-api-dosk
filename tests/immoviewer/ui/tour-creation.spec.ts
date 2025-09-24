@@ -31,6 +31,9 @@ test.describe('Tour Creation Workflow', () => {
     await page.goto('/dashboard');
     await page.locator('[data-test="create-tour-btn"]').click();
     
+    // Wait for modal to be visible
+    await expect(page.locator('[data-test="create-tour-modal"]')).toBeVisible();
+    
     // Try to submit without required fields
     await page.locator('#create-tour-form button[type="submit"]').click();
     
