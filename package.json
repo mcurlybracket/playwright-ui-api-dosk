@@ -4,7 +4,7 @@
   "description": "Playwright UI + API tests for DocuSketch/Immoviewer with mock server",
   "scripts": {
     "mock:serve": "ts-node --esm ./mockapp/server.ts",
-    "mock:serve:ci": "node --loader ts-node/esm ./mockapp/server.ts",
+    "mock:serve:ci": "node ./mockapp/server.js",
     "build:mock": "tsc mockapp/server.ts --outDir dist --target ES2020 --module ESNext --moduleResolution node --esModuleInterop",
     "dev:test": "concurrently -k --raw \"npm:mock:serve\" \"playwright test\"",
     "test": "playwright test",

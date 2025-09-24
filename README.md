@@ -23,7 +23,8 @@ npm test
 
 ```
 ├── mockapp/
-│   ├── server.ts          # Express mock server
+│   ├── server.ts          # Express mock server (TypeScript)
+│   ├── server.js          # Express mock server (JavaScript for CI)
 │   └── public/
 │       ├── tour.html      # Immoviewer-like tour page
 │       └── project.html   # DocuSketch-like project page
@@ -88,7 +89,8 @@ To test against real DocuSketch/Immoviewer APIs:
 
 ## Scripts
 
-- `npm run mock:serve` - Start mock server only
+- `npm run mock:serve` - Start mock server only (TypeScript version)
+- `npm run mock:serve:ci` - Start mock server for CI (JavaScript version)
 - `npm run dev:test` - Start mock server and run all tests
 - `npm test` - Run all tests (assumes mock server is running)
 - `npm run test:ui` - Run tests with Playwright UI
