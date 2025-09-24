@@ -1,0 +1,130 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Tour</title>
+<div data-test="viewer-canvas" style="width:300px;height:200px;background:#eee">viewer</div>
+<button data-test="hotspot" onclick="location.hash='s2'">Go to Kitchen</button>
+
+<!-- Floor plan generation -->
+<button data-test="generate-floorplan-btn">Generate Floor Plan</button>
+<div data-test="floorplan-loading" style="display:none">Generating floor plan...</div>
+<div data-test="floorplan-canvas" style="display:none;width:300px;height:200px;background:#f0f0f0;border:1px solid #ccc">
+  <div data-test="room-living" style="position:absolute;top:50px;left:50px;width:100px;height:80px;background:#e0e0e0;border:1px solid #999">Living</div>
+  <div data-test="room-kitchen" style="position:absolute;top:50px;left:160px;width:80px;height:80px;background:#f0f0e0;border:1px solid #999">Kitchen</div>
+  <div data-test="scale-indicator" style="position:absolute;bottom:10px;right:10px;font-size:12px">Scale: 1m</div>
+</div>
+<div data-test="floorplan-error" style="display:none;color:red">Insufficient image data</div>
+
+<!-- Tour sharing -->
+<button data-test="share-btn">Share</button>
+<div data-test="share-modal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border:1px solid #ccc;padding:20px;z-index:1000">
+  <h3>Share Tour</h3>
+  <label><input type="radio" name="share-method" value="public-link" /> Public Link</label>
+  <label><input type="radio" name="share-method" value="email" /> Email</label>
+  
+  <div data-test="public-link-section" style="display:none">
+    <input data-test="share-link" readonly style="width:300px" />
+    <button data-test="generate-link-btn">Generate Link</button>
+    <button data-test="copy-link-btn">Copy Link</button>
+    <div data-test="copy-success" style="display:none;color:green">Link copied!</div>
+    
+    <div data-test="share-settings">
+      <label><input type="checkbox" name="allow-downloads" /> Allow downloads</label>
+      <label><input type="checkbox" name="require-password" /> Require password</label>
+      <input name="password" placeholder="Password" style="display:none" />
+      <select name="expires">
+        <option value="1day">1 day</option>
+        <option value="7days">7 days</option>
+        <option value="30days">30 days</option>
+      </select>
+    </div>
+  </div>
+  
+  <div data-test="email-section" style="display:none">
+    <input name="recipient-email" placeholder="Recipient email" />
+    <textarea name="message" placeholder="Message"></textarea>
+    <button data-test="send-email-btn">Send Email</button>
+    <div data-test="email-success" style="display:none;color:green">Tour shared successfully</div>
+  </div>
+  
+  <button onclick="this.closest('[data-test=share-modal]').style.display='none'">Close</button>
+</div>
+
+<form id="lead">
+  <input name="name" placeholder="Name" required />
+  <input name="email" placeholder="Email" required />
+  <label><input type="checkbox" name="consent" /> GDPR</label>
+  <button type="submit">Send</button>
+</form>
+
+<script>
+// Floor plan generation
+document.querySelector('[data-test="generate-floorplan-btn"]').addEventListener('click', async () => {
+  const loading = document.querySelector('[data-test="floorplan-loading"]');
+  const canvas = document.querySelector('[data-test="floorplan-canvas"]');
+  const error = document.querySelector('[data-test="floorplan-error"]');
+  
+  loading.style.display = 'block';
+  canvas.style.display = 'none';
+  error.style.display = 'none';
+  
+  // Simulate API call
+  setTimeout(() => {
+    loading.style.display = 'none';
+    // Simulate success for t1, error for t2
+    if (window.location.pathname.includes('t1')) {
+      canvas.style.display = 'block';
+    } else {
+      error.style.display = 'block';
+    }
+  }, 2000);
+});
+
+// Tour sharing
+document.querySelector('[data-test="share-btn"]').addEventListener('click', () => {
+  document.querySelector('[data-test="share-modal"]').style.display = 'block';
+});
+
+document.querySelectorAll('input[name="share-method"]').forEach(radio => {
+  radio.addEventListener('change', (e) => {
+    const publicSection = document.querySelector('[data-test="public-link-section"]');
+    const emailSection = document.querySelector('[data-test="email-section"]');
+    
+    if (e.target.value === 'public-link') {
+      publicSection.style.display = 'block';
+      emailSection.style.display = 'none';
+    } else {
+      publicSection.style.display = 'none';
+      emailSection.style.display = 'block';
+    }
+  });
+});
+
+document.querySelector('[data-test="generate-link-btn"]').addEventListener('click', () => {
+  const linkInput = document.querySelector('[data-test="share-link"]');
+  const tourId = window.location.pathname.split('/').pop();
+  linkInput.value = `https://tours.example.com/${tourId}`;
+});
+
+document.querySelector('[data-test="copy-link-btn"]').addEventListener('click', () => {
+  document.querySelector('[data-test="copy-success"]').style.display = 'block';
+});
+
+document.querySelector('[data-test="send-email-btn"]').addEventListener('click', () => {
+  document.querySelector('[data-test="email-success"]').style.display = 'block';
+});
+
+// Password requirement toggle
+document.querySelector('input[name="require-password"]').addEventListener('change', (e) => {
+  const passwordInput = document.querySelector('input[name="password"]');
+  passwordInput.style.display = e.target.checked ? 'block' : 'none';
+});
+
+// Lead form
+document.querySelector('#lead').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const body = { tourId: 't1', name: fd.get('name'), email: fd.get('email'), consent: !!fd.get('consent') };
+  const res = await fetch('/api/leads', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  if(res.status===201) e.target.innerHTML = '<div data-test="thankyou">Thanks!</div>';
+});
+</script>

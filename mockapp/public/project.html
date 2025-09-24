@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Project</title>
+<div>Status: <span data-test="status-badge">queued</span></div>
+<script>
+async function poll() {
+  const r = await fetch('/api/projects/p1/status');
+  const j = await r.json();
+  document.querySelector('[data-test="status-badge"]').textContent = j.status;
+  if (j.status !== 'done') setTimeout(poll, 500);
+}
+poll();
+</script>

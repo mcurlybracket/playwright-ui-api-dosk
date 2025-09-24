@@ -1,0 +1,67 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Dashboard</title>
+<div data-test="dashboard">
+  <h1>My Tours</h1>
+  <button data-test="create-tour-btn">Create Tour</button>
+  <div data-test="tours-list">
+    <div data-test="tour-card" style="display:none">
+      <h3 data-test="tour-title">Luxury Downtown Loft</h3>
+      <span data-test="tour-status">Processing</span>
+    </div>
+  </div>
+</div>
+
+<div data-test="create-tour-modal" style="display:none">
+  <h2>Create New Tour</h2>
+  <form id="create-tour-form">
+    <input name="title" placeholder="Property name" required />
+    <input name="address" placeholder="Address" required />
+    <select name="propertyType" placeholder="Property type">
+      <option value="residential">Residential</option>
+      <option value="commercial">Commercial</option>
+    </select>
+    <input type="file" multiple accept="image/*" />
+    <div data-test="error-name" style="color:red;display:none">Name is required</div>
+    <div data-test="error-address" style="color:red;display:none">Address is required</div>
+    <div data-test="error-images" style="color:red;display:none">Images are required</div>
+    <button type="submit">Create Tour</button>
+  </form>
+</div>
+
+<script>
+document.querySelector('[data-test="create-tour-btn"]').addEventListener('click', () => {
+  document.querySelector('[data-test="create-tour-modal"]').style.display = 'block';
+});
+
+document.querySelector('#create-tour-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  
+  // Validation
+  let hasErrors = false;
+  if (!formData.get('title')) {
+    document.querySelector('[data-test="error-name"]').style.display = 'block';
+    hasErrors = true;
+  }
+  if (!formData.get('address')) {
+    document.querySelector('[data-test="error-address"]').style.display = 'block';
+    hasErrors = true;
+  }
+  if (!formData.get('images')) {
+    document.querySelector('[data-test="error-images"]').style.display = 'block';
+    hasErrors = true;
+  }
+  
+  if (!hasErrors) {
+    // Simulate tour creation
+    const tourCard = document.querySelector('[data-test="tour-card"]').cloneNode(true);
+    tourCard.style.display = 'block';
+    tourCard.querySelector('[data-test="tour-title"]').textContent = formData.get('title');
+    document.querySelector('[data-test="tours-list"]').appendChild(tourCard);
+    
+    document.querySelector('[data-test="create-tour-modal"]').style.display = 'none';
+    e.target.reset();
+  }
+});
+</script>
